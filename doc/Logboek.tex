@@ -1,0 +1,146 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[dutch]{babel}
+\usepackage{wisjab}
+
+\setlength{\parindent}{0mm}
+\setlength{\parskip}{2mm}
+
+\def\a{\mt a}
+\def\aparasaq{\a_{p}\t\a_{r}\t\a_s\a_q}
+\def\apaq{\a_{p}\t\a_q}
+
+\begin{document}
+\section{Background}
+In quantum chemistry, our objective is to describe the $N$ electrons in a system (e.g. a molecule). As the building blocks for this description, we use \emph{orbitals} $\ket{\chi_p}$, $p\in[K]$ with $K\geq N$. These are the states which single electrons can occupy. The complete state of all electrons individually occupying orbitals $\ket{\chi_{p_1}}, \ldots, \ket{\chi_{p_N}}$ is described, according to the laws of quantum mechanics, not by the simple tensor product $\ket{\chi_{p_1}}\otimes\cdots\otimes\ket{\chi_{p_N}}$, but by the completely antisymmetric product
+\begin{align}\label{eq:antsymmstate}
+\ket\Psi = \frac1{\sqrt{N!}}\sum_\pi(-1)^{P(\pi)}\;\pi\{\ket{\chi_{p_1}} \otimes\ldots\otimes\ket{\chi_{p_N}}\}
+\end{align}
+where $\pi$ is a permutation of the $N$ electrons and $P(\pi)$ denotes the sign of this permutation. As a result, $\ket\Psi = 0$ whenever $\ket{\chi_{p_i}} = \ket{\chi_{p_j}}$ for at least one pair $i, j$. In other words: two electrons in the same system cannot occupy the same orbital (this is know as the \emph{Pauli exclusion principle}. We denote an antisymmetrised product like in eq \ref{eq:antsymmstate} as $\ket{\chi_{p_1}\chi_{p_2}\cdots\chi_{p_N}}$. Notice that $\ket{\cdots\chi_p\cdots\chi_q\cdots} = -\ket{\cdots\chi_q\cdots\chi_p\cdots}$ for every $p, q$.\par
+In this formulation, it is useful to define the so-called \emph{annihilation operators} $\a_p$ and their hermitian conjugates, the \emph{creation operators} $\a_p\t$. The creation operator $\a_p\t$, when applied to an $N$-electron state $\ket\Psi$, creates a new electron in $\ket\Psi$ which occupies the oribtal $\ket{\chi_p}$: 
+\begin{align*}
+\a_p\t\ket{\chi_q\chi_r\cdots} = \ket{\chi_p\chi_q\chi_r\cdots}
+\end{align*}
+if $\ket{\chi_p}$ is already occupies in $\ket\Psi$, the resulting state is 0:
+\begin{align*}
+\a_p\t\ket{\chi_q\chi_r\cdots\chi_p\cdots} = 0
+\end{align*}
+The annihilation operator $\a_p$ carries out the reverse operation, and removes an electron occupying the orbital $\ket{\chi_p}$ if it is the leftmost oribtal in $\ket\Psi$:
+\begin{align*}
+\a_p\ket{\chi_p\chi_q\chi_r\cdots} = \ket{\chi_q\chi_r\cdots}
+\end{align*}
+If the orbital $\ket{\chi_p}$ is not the leftmost, we must move it to the left by repeatedly swapping it with its left neighbour, at the cost of a minus sign. In other words:
+\begin{align*}
+\a_p\ket{\chi_q\chi_r\cdots\chi_p\cdots} = \Gamma^p\ket{\chi_q\chi_r\cdots}
+\end{align*}
+where $\Gamma^p=1$ if $\ket{\chi_p}$ is occupied in an odd position (counting from 1), and $\Gamma^p=-1$ in an even position. If $\ket{\chi_p}$ is not occupied in $\ket\Psi$, then $\a_p\ket\Psi=0$.\par
+As a result, the following anticommutation relations hold:
+\begin{align*}
+\{\a_p, \a_q\} = \{\a_p\t, \a_q\t\} = 0;~~~~\{\a_p\t, \a_q\} = \delta_{pq}
+\end{align*}
+\section{Problem statement}
+Given an orthogonal orbital basis (i.e. $\braket{\chi_p}{\chi_q} = \delta_{pq}$), e.g. a basis of molecular orbitals as returned by an SCF procedure, we consider the electronic structure hamiltonian in this basis:
+\begin{align*}
+\mt H = \underbrace{\sum_{pq}h_{pq}\apaq}_{O_1}+\underbrace{\frac12\sum_{pqrs}g_{pqrs}\aparasaq}_{O_2}\\
+\end{align*}
+where
+\begin{align*}
+h_{pq} = [p|h|q] = \int d\vc x_1\,\chi^*_p(\vc x_1)\bigg({-\frac12}\nabla^2+V_{\rm nuc}\bigg)\chi_q(\vc x_1)
+\end{align*}
+and
+\begin{align*}
+g_{pqrs} = [pq|rs] = \int d\vc x_1d\vc x_2\,\chi^*_p(\vc x_1)\chi_q(\vc x_1)\,r_{12}^{-1}\chi^*_r(\vc x_2)\chi_s(\vc x_2)
+\end{align*}
+Now we can write (note that this only works for fixed $N$)
+\begin{align*}
+\apaq = \frac1{N-1}\sum_t\a_p\t\a_t\t\a_t\a_q
+\end{align*}
+and when we define
+\begin{align*}
+k_{pqrs} := \frac{h_{pq}\delta_{rs}+\delta_{pq}h_{rs}}{N-1}
+\end{align*}
+then we have
+\begin{align*}
+O_1 &= \sum_{pq}h_{pq}\a_{p}\t\a_{q} = \sum_{pqt}\frac{1}{N-1}h_{pq}\a_{p}\t\a_{t}\t\a_{t}\a_{q} =\sum_{pqrs}\frac{1}{N-1}h_{pq}\delta_{rs}\a_{p}\t\a_{r}\t\a_s\a_q\\
+&= \frac12\sum_{pqrs}k_{pqrs}\aparasaq.
+\end{align*}
+Now define the tensor
+\begin{align*}
+G_{pqrs} := \frac12(k_{pqrs}+g_{pqrs})
+\end{align*}
+and observe that
+\begin{align*}
+\mt H = \sum_{pqrs}G_{pqrs}\aparasaq;
+\end{align*}
+the one- and two-electron terms have now been combined into a single term.\par
+Now, seeing as $G_{pqrs} = G^*_{qpsr}$ (following from the definintions of $h_{pq}$ and $g_{pqrs}$), we find that the matrix
+\begin{align*}
+F_{(pr)(qs)} := G_{pqrs}
+\end{align*}
+is hermitian, when we combine the indices $pr$ and $qs$. We can now take an eigendecomposition: $\mt F = \mt U\mt\Lambda\mt U\t$, or written out in index notation,
+\begin{align*}
+F_{(pr)(qs)} = \sum_{tu}\lambda_{(tu)} U^{(pr)}_{(tu)}{U^*}^{(qs)}_{(tu)}
+\end{align*}
+where $\mt U$ is a unitary matrix. In this representation we find
+\begin{align*}
+\mt H = \sum_{pqrs}\sum_{tu}\lambda_{(tu)} U^{(pr)}_{(tu)}{U^*}^{(qs)}_{(tu)}\aparasaq.
+\end{align*}
+
+%\begin{align*}
+%O_2 = \sum_{pqrs}g_{pqrs}\aparasaq\\
+%\\
+%F_{pqrs} := G_{prqs} \Rightarrow \mt F\text{ is hermites} \Rightarrow \mt F = \mt U\mt\Lambda\mt U\t \text{ als we }pq\text{ en }rs\text{ samen nemen}\\
+%\Rightarrow \\
+%\Rightarrow G_{pqrs} = \sum_{(tu)}\lambda_{(tu)} U_{(pr)}^{(tu)}{U^*}_{(qs)}^{(tu)}\\
+%\end{align*}
+
+Now, our approach to an adiabatic algorithm is as follows. Sort the eigenvalues $\lambda_i$ (relabelling the indices from $(tu)$ to $i$) by absolute value, in descending order, and suppose we know the ground state $\ket{\Psi_0}$ for a truncated hamiltonian $\mt H_k$ where we consider only the $k$ largest eigenvalues (by absolute value) $\lambda_1, \ldots, \lambda_k$. We can now find a better approximation to the ground state of $\mt H$ by adiabatically ``turning on'' the next eigenvalue $\lambda_{k+1}$:
+\begin{align*}
+\tilde{\mt H}_{k+1}(t) = \mt H_k+\mt K_{k+1}(t)
+\end{align*}
+where
+\begin{align*}
+\mt K_{k+1}(t) = \lambda_{k+1}\,A(t)\sum_{pqrs}U^{(pr)}_{k+1}{U^*}^{(qs)}_{k+1}\aparasaq
+\end{align*}
+and $A(t)$ is an increasing function such that for evolution time $T$
+\begin{align*}
+A(0) = 0,\hspace{0.6cm}A(T) = 1.
+\end{align*}
+In this way, we can repeatedly ``turn on'' a single eigenvalue and evolve adiabatically until we have reached sufficient precision.\par
+In order to determine the time $T$ for which we arrive ``close enough'' to the correct ground state after an adiabatic evolution, we need three pieces of information \cite{ambainis}:
+\begin{itemize}
+\item an upper bound for $\max_{t\in[0, T]}\|\af{}t\mt K_{k+1}(t)\|$, with $\|\cdot\|$ the operator norm;
+\item an upper bound for $\max_{t\in[0, T]}\|\af{^2}{t^2}\mt K_{k+1}(t)\|$;
+\item a lower bound for $\min_{t\in[0, T]}|E'_1(t)-E'_0(t)|$, where $E'_0(t)$ and $E'_1(t)$ are the ground state and first excited state energies of $\tilde{\mt H}_{k+1}(t)$ respectively.
+\end{itemize}
+
+The first two bounds are relatively easy to express, since
+\begin{align*}
+\Big\|\af{}t\mt K_{k+1}(t)\Big\| &= |\lambda_{k+1}|\cdot\Big|\af{}tA(t)\Big|\cdot\Big\|\sum_{pqrs}U^{(pr)}_{k+1}{U^*}^{(qs)}_{k+1}\aparasaq\Big\|\\
+&= |\lambda_{k+1}|\cdot\Big|\af{}tA(t)\Big|\cdot\Big\|\sum_{pr}U^{(pr)}_{k+1}\a_p\t\a_r\t\Big\|^2\\
+&= |\lambda_{k+1}|\cdot\Big|\af{}tA(t)\Big|\cdot\Big\|\sum_{p,\, r>p}(U^{(pr)}_{k+1}-U^{(rp)}_{k+1})\a_p\t\a_r\t\Big\|^2\\
+&= |\lambda_{k+1}|\cdot\Big|\af{}tA(t)\Big|\cdot\frac12\sum_{pr}(U^{(pr)}_{k+1}-U^{(rp)}_{k+1})^2\\
+&\leq 2|\lambda_{k+1}|\cdot\Big|\af{}tA(t)\Big|,
+\end{align*}
+where we have used the orthogonality of the basis and the fact that the values $U^{(pr)}_{k+1}$ form the elements of a unit vector. In other words, the first two pieces of information are only determined by the function we choose for $A(t)$.\par
+Naturally, instead of an eigendecomposition of $\mt F$, we could also use an SVD or Cholesky decomposition. Another option would be to take the path of tensor hypercontraction \cite{berry, thc}.
+
+\section{Simulations}
+\subsection{Approaches to find a lower bound to the gap}
+\begin{itemize}
+\item Matrix interlacing theorem (low-rank perturbation)
+\item Addition of infinitesimal matrices (e.g. infinitesimal time)
+\end{itemize}
+\subsection{Simulations}
+We have carried out simulations to watch the ground state and first excited state energies for different configurations of two and four hydrogen atoms, using the STO-3G, 6-31G and cc-pVDZ basis sets.\par
+--Needs figures--
+
+\begin{thebibliography}{x}
+\bibitem{ambainis}A. Ambainis en O. Regev (2018), \textit{An elementary proof of the quantum adiabatic theorem}
+\bibitem{berry}J. Lee et al. (2020), \textit{Even more efficient quantum computations of chemistry through tensor hypercontraction}
+\bibitem{thc}E.G. Hohenstein et al (2012), \textit{Tensor hypercontraction density fitting. I. Quartic scaling second- and third-order Møller-Plesset perturbation theory}
+\end{thebibliography}
+\end{document}

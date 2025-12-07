@@ -1,0 +1,511 @@
+import itertools
+import numpy as np
+import openfermion
+import scipy.linalg
+import scipy.special
+import scipy.sparse.linalg
+import time
+
+from .chamil import CHamil
+
+np.random.seed(0)
+
+
+class ASPEigCIM:
+    def __init__(self, config):
+        self.walk_precision = config["walk_precision"]
+        self.h_final = config["h_final"]
+        self.g_final = config["g_final"]
+        self.h_initial = config["h_initial"]
+        self.g_initial = config["g_initial"]
+        self.N = config["N"]
+        self.spin_modes = config["spin_modes"]  # number of spin states per "spatial" mode
+        self.evo_mode = config["evolution_mode"]  # whether we use the nonquadratic or quadratic form, or evolve directly
+        self.squared_form = (self.evo_mode == "qf")
+
+        self.L = self.h_final.shape[0]  # number of spatial orbitals
+        self.K = self.spin_modes * self.L
+
+        self.dets = np.array(list(itertools.combinations(range(2 * self.L), self.N)))  # Slater determinants
+        self.d = int(scipy.special.binom(self.K, self.N))  # dimension of 2-electron Fock subspace for K spin orbitals
+
+        self.S_sq = self.build_S_squared()  # (self.d x self.d) csc matrix
+        self.S_sq_mat = self.S_sq.toarray()
+
+        self.G_final   = self.build_interaction_tensor(self.h_final, self.g_final, self.L, self.N, squared_form=self.squared_form)
+        self.G_initial = self.build_interaction_tensor(self.h_initial, self.g_initial, self.L, self.N, squared_form=self.squared_form)
+
+        # self.chamil = CHamil(self.k, self.N, self.spin_modes)
+
+        H_initial = self.build_hamiltonian(self.G_initial, squared_form=self.squared_form, print_symbolic_op=False)  # (self.d x self.d) csc matrix
+        self.initial_eigenstates = (self.diagonalise_with_spin_configuration(H_initial))[1]
+        self.initial_ground_state = self.initial_eigenstates[:, 0]
+
+        H_final = self.build_hamiltonian(self.G_final, squared_form=self.squared_form, print_symbolic_op=False)  # (self.d x self.d) csc matrix
+        self.final_eigenstates = (self.diagonalise_with_spin_configuration(H_final))[1]
+        self.final_ground_state = self.final_eigenstates[:, 0]
+
+        # print("H_initial = \n{}".format((H_initial.toarray())))
+        # print("H_final = \n{}".format((H_final.toarray())))
+        # print("initial ground state = \n{}".format(self.initial_ground_state))
+        # print("final ground state = \n{}".format(self.final_ground_state))
+
+        self.walk_result = None
+
+    def build_interaction_tensor(self, h, g, k, N, squared_form=False):
+        if squared_form:
+            eta = h - np.einsum("pttq -> pq", g) / 2
+            omega = (np.einsum("pq, rs -> pqrs", eta, np.identity(k)) +
+                     np.einsum("pq, rs -> pqrs", np.identity(k), eta)) / N
+            G = (omega + g) / 2  # combined one- and two-electron integral tensor
+        else:
+            # four-index version of one-electron integral tensor
+            w = (np.einsum("pq, rs -> pqrs", h, np.identity(k)) +
+                 np.einsum("pq, rs -> pqrs", np.identity(k), h)) / (N - 1)
+            G = (w + g) / 2  # combined one- and two-electron integral tensor
+
+        return G
+
+    def diagonalise_with_spin_configuration(self, H_csc, verbose=False):
+        H = H_csc.toarray()
+        S_sq = self.S_sq_mat
+
+        if verbose:
+            print("S_sq = \n{}".format(self.S_sq))
+            print("H = \n{}".format(H))
+
+        if not np.isclose(np.linalg.norm(H @ S_sq - S_sq @ H), 0):
+            raise ValueError("H and S_sq do not commute")
+
+        # _, psi = np.linalg.eigh((S_sq + np.identity(self.d)) @ H)
+        # 1000 * np.identity is to make sure zero energies don't cause impure spin states. Careful with large energies!!
+        H_common = (H + 1000 * np.identity(self.d)) @ (S_sq + np.identity(self.d))
+        _, psi = np.linalg.eigh(H_common)
+
+        e = np.diag(psi.T.conj() @ H @ psi)
+        argsort = np.argsort(e)
+
+        if verbose:
+            e_H, psi_H = np.linalg.eig(H)
+            print("e_H = {}\npsi_H=\n{}".format(e_H, psi_H))
+            print("psi =\n{}".format(psi))
+            print("e_M =\n{}".format(e))
+
+        return e[argsort], psi[:, argsort]
+
+    def evolution_coeff(self, k, M, s, n=0): # k is term index, M is total no of terms, s is scaled evolution time, n is degree
+        x = M * s - k
+
+        if(x <= 0):
+            return 0
+        if(x >= 1):
+            return 1
+
+        if(n == 0):
+            return x
+        if(n == 1):
+            return 3 * x ** 2 - 2 * x ** 3
+
+    def run(self):
+        self.walk_result = self.walk_hamiltonian()
+
+    def walk_hamiltonian(self):
+        # return
+
+        print("starting walk")
+        walk_precision = self.walk_precision
+
+        num_lambdas = int(self.L ** 2)
+        steps_done = 0
+
+        S_sq = self.S_sq
+
+        H_init = self.build_hamiltonian(self.G_initial, squared_form=self.squared_form)
+        F_final_sq, l_final, U_final = self.build_CIM_matrix(self.G_final, squared_form=self.squared_form)
+
+        F_evo_sq,  l_evo_sq,  U_evo_sq  = self.build_CIM_matrix(self.G_final - self.G_initial, squared_form=True)
+        F_evo_nsq, l_evo_nsq, U_evo_nsq = self.build_CIM_matrix(self.G_final - self.G_initial, squared_form=False)
+
+        # return
+
+        if self.squared_form:
+            F_evo, l_evo, U_evo, =\
+                F_evo_sq, l_evo_sq, U_evo_sq
+        else:
+            F_evo, l_evo, U_evo, =\
+                F_evo_nsq, l_evo_nsq, U_evo_nsq
+
+        print("l =")
+        print(l_evo)
+
+        e_init, psi_init = self.diagonalise_with_spin_configuration(H_init)
+
+        # pre-build hamiltonian terms
+        G_terms = []
+        H_terms = []
+        for i in range(self.L ** 2):
+            info = "building hamiltonian terms... ({} of {})".format(i + 1, self.L ** 2)
+            print("\r" + info + " " * 16, end="")
+            G_i = self.build_G_term_from_single_decomp(l_evo, U_evo, i, squared_form=self.squared_form)
+            G_terms.append(G_i)
+            H_i = self.build_hamiltonian(G_i, squared_form=self.squared_form)
+            H_terms.append(H_i)
+        print()
+
+        dEds_at_zero = np.zeros(self.L ** 2)
+        for i in range(self.L ** 2):
+            H_terms_i_matrix = H_terms[i].toarray()
+            dEds_at_zero[i] = psi_init[:, 0] @ H_terms_i_matrix @ psi_init[:, 0]\
+                            - psi_init[:, 1] @ H_terms_i_matrix @ psi_init[:, 1]
+
+        index_groups = []
+
+        # standard ordering
+        for i in range(num_lambdas):
+            index_groups.append([i])
+
+        if self.evo_mode == "direct":
+            # direct (full) interpolation
+            index_groups = [list(range(self.L ** 2))]
+        else:
+            # maximum dE/ds difference ordering
+            argsort_dEds_at_zero = np.argsort(dEds_at_zero)
+            # print("dEds_at_zero[argsort_dEds_at_zero] = \n{}".format(dEds_at_zero[argsort_dEds_at_zero]))
+            index_groups_new = []
+            for i in argsort_dEds_at_zero:
+                index_groups_new.append(index_groups[i])
+            # print(index_groups_new)
+            index_groups = index_groups_new
+            # print("l_evo_dEds_sorted = {}".format(l_evo[argsort_dEds_at_zero]))
+
+        # print(index_groups)
+
+        # if self.evo_mode == "nqf":
+        #     i = 0
+        #     for index_group in index_groups:
+        #         i += 1
+        #         m = index_group[0]
+        #         U_mat = U_evo_nsq[:, m].reshape(self.L, self.L)
+        #         if np.isclose(np.linalg.norm(U_mat - U_mat.T), 0):
+        #             print("step {}: U symmetric".format(i))
+        #         elif np.isclose(np.linalg.norm(U_mat + U_mat.T), 0):  # U^pr = -U^rp
+        #             print("step {}: U antisymmetric".format(i))
+
+        H_res_terms = []
+        for index_group in index_groups:
+            H_res_term = scipy.sparse.csc_matrix((self.d, self.d))
+            for index in index_group:
+                H_res_term += H_terms[index]
+            H_res_terms.append(H_res_term)
+
+        eig_steps = len(index_groups)
+
+        plot_x_size = int(walk_precision * eig_steps) + 1
+
+        # plotted stuff
+        energies = np.zeros((plot_x_size, self.d))
+        final_ground_state_overlaps = np.zeros((plot_x_size, self.d))
+        spins = np.zeros((plot_x_size, self.d))
+        initial_ground_state_overlaps = np.zeros((plot_x_size, self.d))
+
+        dpsi_norm = np.zeros((plot_x_size - 1, self.d))
+        dHds_norm = np.zeros(plot_x_size - 1)  # operator norm of first derivative of H
+        d2Hds2_norm = np.zeros(plot_x_size - 2)  # operator norm of second derivative of H
+
+        H = H_init
+
+        energies[0, :] = e_init
+
+        s_sq = 0  # projecting onto singlets
+        # s_sq = 2  # projecting onto triplets
+
+        for m in range(self.d):
+            final_ground_state_overlaps[0, m] = \
+                np.abs(np.inner(psi_init[:, m].reshape(-1), self.final_ground_state)) ** 2
+
+        for m in range(self.d):
+            initial_ground_state_overlaps[0, m] = \
+                np.abs(np.inner(psi_init[:, m].reshape(-1), self.initial_ground_state)) ** 2
+
+        for m in range(self.d):
+            spins[0, m] = \
+                psi_init[:, m] @ S_sq.toarray() @ psi_init[:, m]
+
+        num_singlets = 0
+        for m in range(self.d):
+            if np.isclose(spins[0, m], s_sq, atol=1e-5):
+                num_singlets += 1
+
+        psi_0_prev = None
+
+        psi_prev = psi_init
+
+        H_prev = H_init
+        H_prevprev = np.zeros((self.d, self.d))
+        ds = 1 / (eig_steps * walk_precision)
+
+        for i in range(eig_steps):
+            try:
+                time_start = time.time()
+
+                for j in range(walk_precision):
+                    s = (i + (j + 1) / walk_precision) / eig_steps
+
+                    H = H_init
+                    for k in range(eig_steps):
+                        H += self.evolution_coeff(k, eig_steps, s, n=1) * H_res_terms[k]
+
+                    e, psi = self.diagonalise_with_spin_configuration(H)
+                    psi_0_prev = psi[:, 0]
+
+                    plot_x_index = i * walk_precision + j + 1
+
+                    energies[plot_x_index, :] = e
+
+                    for m in range(self.d):
+                        final_ground_state_overlaps[plot_x_index, m] = \
+                            np.abs(np.inner(psi[:, m].reshape(-1), self.final_ground_state)) ** 2
+
+                    for m in range(self.d):
+                        initial_ground_state_overlaps[plot_x_index, m] = \
+                            np.abs(np.inner(psi[:, m].reshape(-1), self.initial_ground_state)) ** 2
+
+                    for m in range(self.d):
+                        spins[plot_x_index, m] = \
+                            psi[:, m] @ S_sq.toarray() @ psi[:, m]
+
+                    for m in range(self.d):
+                        dpsi_norm[plot_x_index - 1, m] = \
+                            np.linalg.norm(psi[:, m] - psi_prev[:, m])
+
+                    dHds_norm[plot_x_index - 1] = np.linalg.norm((H - H_prev).toarray(), ord=2) / ds
+                    if plot_x_index >= 2:
+                        d2Hds2_norm[plot_x_index - 2] = np.linalg.norm((H - 2 * H_prev + H_prevprev).toarray(), ord=2) / ds ** 2
+
+                    psi_prev = psi
+                    H_prevprev = H_prev
+                    H_prev = H
+
+                # H += H_term
+                steps_done += 1
+
+                time_end = time.time()
+                info = "eigenvalue step {} of {} --  (time elapsed: {})".format\
+                    (i + 1, eig_steps, time_end - time_start)
+                print("\r" + info + " " * 16, end="")
+                # print(info)
+
+            except KeyboardInterrupt:
+                break
+
+        print("\n")
+
+        # print("gs_ap = {}".format(psi_0_prev))
+
+        # print("steps_done =", steps_done)
+
+        spins = np.round(spins, decimals=2)
+
+        energies_singlet_projected = np.zeros((0, num_singlets))
+        final_ground_state_overlaps_singlet_projected = np.zeros((0, num_singlets))
+        spins_singlet_projected = np.zeros((0, num_singlets))
+        initial_ground_state_overlaps_singlet_projected = np.zeros((0, num_singlets))
+        dpsi_norm_singlet_projected = np.zeros((0, num_singlets))
+
+        for x in range(len(energies)):
+            singlet_indices_x = []
+            for m in range(self.d):
+                if np.isclose(spins[x, m], s_sq, atol=1e-5):
+                    singlet_indices_x.append(m)
+
+            energies_singlet_projected = np.vstack((energies_singlet_projected, energies[x, singlet_indices_x]))
+            final_ground_state_overlaps_singlet_projected = \
+                np.vstack((final_ground_state_overlaps_singlet_projected, final_ground_state_overlaps[x, singlet_indices_x]))
+            spins_singlet_projected = np.vstack((spins_singlet_projected, spins[x, singlet_indices_x]))
+            initial_ground_state_overlaps_singlet_projected = \
+                np.vstack((initial_ground_state_overlaps_singlet_projected, initial_ground_state_overlaps[x, singlet_indices_x]))
+            if(x < len(energies) - 1):  # dpsi_norm is one entry shorter
+                dpsi_norm_singlet_projected = \
+                    np.vstack((dpsi_norm_singlet_projected, dpsi_norm[x, singlet_indices_x]))
+
+        gap = energies_singlet_projected[:, 1] - energies_singlet_projected[:, 0]
+
+        # Jansen path length
+        jansen_dHds_term = 7 * np.sum(dHds_norm ** 2 / gap[1:] ** 3) * ds
+        print("jansen_dHds_term = {}".format(jansen_dHds_term))
+        jansen_d2Hds2_term = np.sum(d2Hds2_norm / gap[1:-1] ** 2) * ds
+        print("jansen_d2Hds2_term = {}".format(jansen_d2Hds2_term))
+        time_bound_jansen = jansen_d2Hds2_term + jansen_dHds_term
+        print("time_bound_jansen = {}".format(time_bound_jansen))
+
+        # Boixo time bound (path length)
+        Delta = np.min(gap)
+        path_length = np.sum(dpsi_norm[:, 0]) * ds
+        time_bound_boixo = path_length / Delta
+        print("time_bound_boixo = {}".format(time_bound_boixo))
+
+        # Delta = np.min(energies_singlet_projected[:, 1] - energies_singlet_projected[:, 0])
+        # path_length = np.sum(dpsi_norm[:, 0]) / (eig_steps * walk_precision)
+
+        print("path_length = {}".format(path_length))
+        print("Delta = {}".format(Delta))
+
+        actual_plot_x_size = steps_done * walk_precision + 1
+
+        # return energies[:actual_plot_x_size + 1], \
+        #        ground_state_overlaps[:actual_plot_x_size + 1], \
+        #        spins[:actual_plot_x_size + 1], \
+        #        walk_precision
+
+        return energies_singlet_projected[:actual_plot_x_size + 1], \
+               final_ground_state_overlaps_singlet_projected[:actual_plot_x_size + 1], \
+               spins_singlet_projected[:actual_plot_x_size + 1], \
+               initial_ground_state_overlaps_singlet_projected[:actual_plot_x_size + 1], \
+               walk_precision
+
+    def pretty_print_state(self, psi, wrap=False, suppress_small=False, atol=1e-5):
+        str_psi = ""
+
+        for i in range(self.d):
+            if suppress_small and np.isclose(psi[i], 0, atol=atol): continue
+
+            str_det_i = ""
+            for j in range(self.N):
+                str_det_i += "{}".format(self.dets[i][j] // 2)
+                if self.dets[i][j] % 2 == 1:
+                    str_det_i += chr(0x305)  # add a bar to indicate beta spin
+
+            amp_abs = np.abs(psi[i])
+            sign = "+" if psi[i] >= 0 else "-"
+            str_psi += "{} {:.6f}|{}>".format(sign, amp_abs, str_det_i) + ("\n" if wrap else " ")
+
+        print(str_psi)
+
+    def project_FO_csc_onto_particle_number_sector(self, H_FO_csc):
+        d = H_FO_csc.shape[0]
+
+        # correct particle number indices
+        N_particle_indices = []
+        for I in range(d):
+            if bin(I).count("1") == self.N:
+                N_particle_indices.append(I)
+        N_particle_indices = N_particle_indices[::-1]  # most significant bits first as we read Slater determinant from left to right
+
+        H_FO_csr = H_FO_csc.tocsr()
+        H_FO_csr = H_FO_csr[N_particle_indices, :]
+        H_FO_csc = H_FO_csr.tocsc()
+        H_FO_csc = H_FO_csc[:, N_particle_indices]
+
+        return H_FO_csc
+
+    def convert_FO_to_csc(self, op_FO):
+        op_FO_csc = openfermion.get_sparse_operator(op_FO)
+        op_FO_csc_projected = self.project_FO_csc_onto_particle_number_sector(op_FO_csc)
+
+        if op_FO_csc_projected.shape == (0, 0):
+            return scipy.sparse.csc_matrix((self.d, self.d))
+
+        return op_FO_csc_projected
+
+        # op = op_FO_csc_projected.toarray()
+        #
+        # if op.shape == (0, 0):
+        #     return np.zeros(self.d, self.d)
+        # return op
+
+    def build_hamiltonian(self, G, squared_form=False, print_symbolic_op=False):  # nonquadratic factorisation, OpenFermion
+        # operator expressed in fermion operators; below call makes sure OF produces right dimension
+        H_FO = openfermion.FermionOperator("{maxorb}^ {maxorb}^ {maxorb} {maxorb}".format(maxorb=self.K - 1), 1e-8)
+
+        if squared_form:
+            FO_string = "{P}^ {Q} {R}^ {S}"
+        else:
+            FO_string = "{P}^ {R}^ {S} {Q}"
+
+        for p, q, r, s in itertools.product(range(self.L), repeat=4):
+            for sigma, tau in itertools.product(range(2), repeat=2):
+                P = 2 * p + sigma
+                Q = 2 * q + sigma
+                R = 2 * r + tau
+                S = 2 * s + tau
+                H_FO += openfermion.FermionOperator(FO_string.format(P=P, Q=Q, R=R, S=S), G[p, q, r, s])
+
+        if print_symbolic_op:
+            print(H_FO)
+
+        return self.convert_FO_to_csc(H_FO)
+
+    def build_S_z(self):  # S_z spin operator
+        S_z_FO = openfermion.FermionOperator("{maxorb}^ {maxorb}".format(maxorb=self.K - 1), 0)
+
+        for p in range(self.L):
+            S_z_FO += openfermion.FermionOperator("{P}^ {P}".format(P=2 * p), 0.5) \
+                    - openfermion.FermionOperator("{P}^ {P}".format(P=2 * p + 1), 0.5)
+
+        return self.convert_FO_to_csc(S_z_FO)
+
+    def build_S_plus(self):  # S_plus spin operator
+        S_plus_FO = openfermion.FermionOperator("{maxorb}^ {maxorb}".format(maxorb=self.K - 1), 0)
+
+        for p in range(self.L):
+            S_plus_FO += openfermion.FermionOperator("{P_up}^ {P_down}".format(P_up=2 * p, P_down=2 * p + 1), 1)
+
+        return self.convert_FO_to_csc(S_plus_FO)
+
+    def build_S_minus(self):  # S_minus spin operator
+        S_minus_FO = openfermion.FermionOperator("{maxorb}^ {maxorb}".format(maxorb=self.K - 1), 0)
+
+        for p in range(self.L):
+            S_minus_FO += openfermion.FermionOperator("{P_down}^ {P_up}".format(P_up=2 * p, P_down=2 * p + 1), 1)
+
+        return self.convert_FO_to_csc(S_minus_FO)
+
+    def build_S_squared(self):  # S^2 spin operator
+        S_minus = self.build_S_minus()
+        S_plus  = self.build_S_plus()
+        S_z = self.build_S_z()
+
+        S_squared = S_minus @ S_plus + S_z @ S_z + S_z
+
+        return S_squared
+
+    def build_CIM_matrix(self, G, squared_form=False, argsort=None):
+        K = G.shape[0]
+
+        if argsort is None:
+            # argsort = np.argsort(np.abs(l))[::-1]  # sort by absolute value in descending order
+            argsort = np.arange(K ** 2)  # sort in ascending order
+            # argsort = np.arange(K ** 2)[::-1]  # sort in descending order
+            # argsort = np.arange(K ** 2); np.random.shuffle(argsort)
+            pass
+
+        if squared_form:
+            F = G.reshape(K ** 2, K ** 2)  # F_(pq)(rs) = G_pqrs
+        else:
+            F = np.transpose(G, (0, 2, 1, 3)).reshape(K ** 2, K ** 2)  # F_(pr)(qs) = G_pqrs
+
+        l, U = np.linalg.eigh(F)  # F = U @ diag(l) @ U†, eigvals sorted in ascending order
+
+        l = l[argsort]
+        U = U[:, argsort]
+
+        return F, l, U
+
+    def build_G_term_from_single_decomp(self, labda, U, k, squared_form=False):
+        index_mask = np.zeros(len(labda))
+        index_mask[k] = 1
+        labda_k = labda * index_mask
+
+        if squared_form:
+            F_k = U @ np.diag(labda_k) @ U.T  # note U is orthogonal here because real orbitals are assumed
+            G_k = F_k.reshape(self.L, self.L, self.L, self.L)
+        else:
+            F_k = U @ np.diag(labda_k) @ U.conj().T
+            # G_i = np.zeros((self.K, self.K, self.K, self.K))\
+            #       + np.transpose(F_i.reshape(self.k, self.k, self.k, self.k), (0, 2, 1, 3))
+            G_k = np.transpose(F_k.reshape(self.L, self.L, self.L, self.L), (0, 2, 1, 3))
+
+        return G_k
+
+    def build_G_term_from_double_decomp(self, labda, theta, V, k, l, m, squared_form=False, asymm=False):
+        G_klm = labda[k] * theta[k, l] * theta[k, m] * np.einsum("p, q, r, s -> pqrs", V[k, l], V[k, l], V[k, m], V[k, m])

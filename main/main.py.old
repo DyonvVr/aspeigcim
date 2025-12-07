@@ -1,0 +1,311 @@
+import numpy as np
+import os
+import sys
+
+from src.aspeigcim.classes.aspeigcim import ASPEigCIM
+from src.aspeigcim.classes.es import ES
+from src.aspeigcim.classes.hubb import Hubb
+from src.aspeigcim.classes.result_processor import ResultProcessor
+
+file_dir = os.path.dirname(os.path.realpath(__file__))
+
+
+def setup_config_aspeigcim_es(atoms_config=None, basis_set=None):
+    if atoms_config is None:
+        # atoms_config = "H2-w0.18775"
+        atoms_config = "H2-w0.751"
+        # atoms_config = "H2-w11.265"
+
+        # atoms_config = "H4-rand-1"
+        # atoms_config = "H4-w10-h0.751-plpdm2"
+        # atoms_config = "H4-w10-h0.751-plpdm3.5"
+        # atoms_config = "H4-w10-h0.751-plpdm5"
+        # atoms_config = "H4-w0.751-h0.751"
+        # atoms_config = "H4-w0.751-h0.771"
+        # atoms_config = "H4-w0.751-h0.871"
+        # atoms_config = "H4-w0.751-h0.971"
+        # atoms_config = "H4-w10-h0.751"
+        # atoms_config = "H4-w2-h0.15-plpdm0.7"
+
+        # atoms_config = "H2O-l1.1"
+
+        # atoms_config = "benzene"
+
+    if basis_set is None:
+        basis_set = "STO-3G"
+        # basis_set = "6-31G"
+        # basis_set = "cc-pVDZ"
+
+    spin_mode = "1/2"
+
+    config_es = \
+    {
+        "spin_mode": spin_mode,
+        "atoms_config": atoms_config,
+        "basis_set": basis_set
+    }
+
+    es = ES(config_es)
+
+    L = es.L
+    h_zero_es, g_zero_es = np.zeros((2 * L, 2 * L)), np.zeros((2 * L, 2 * L, 2 * L, 2 * L))
+    h_oneb_es, g_oneb_es = es.h, g_zero_es
+    h_twob_es, g_twob_es = h_zero_es, es.g
+
+    config_aspeigcim_es = \
+    {
+        # "h_initial": h_zero_es,
+        # "g_initial": g_zero_es,
+        ### the following yield hamiltonians in AO basis ###
+        # "h_final": es.h,
+        # "g_final": es.g,
+        # "h_initial": h_oneb_es,
+        # "g_initial": g_oneb_es,
+        # "h_initial": h_twob_es,
+        # "g_initial": g_twob_es,
+        ### the following yield hamiltonians in MO (Hartree-Fock) basis ###
+        "h_final": es.h_MO,  # describes full hamiltonian\
+        "g_final": es.g_MO,  # in MO (Hartree-Fock) basis
+        "h_initial": es.h_HF,  # Fock operator\
+        "g_initial": es.g_HF,  # in MO basis
+
+        "C_sbd": es.C_spin_block_diag,
+
+        "N": es.N,
+        "spin_mode": spin_mode,
+        "name": "{}_{}".format(atoms_config, basis_set)
+    }
+
+    return config_aspeigcim_es
+
+def setup_config_aspeigcim_hubb():
+    N = 4
+    L = 4
+    spin_mode = "1/2"
+    # couplings = "fermi_hubbard"
+    couplings = "random"
+    # couplings = "KjS2"
+    t = -1
+    U = -2
+
+    seed = np.random.randint(9999999)
+    # seed = 12
+
+    config_hubb = \
+    {
+        "L": L,
+        "N": N,
+        "spin_mode": spin_mode,
+        "couplings": couplings,
+        "t": t,
+        "U": U,
+        "seed": seed
+    }
+
+    hubb = Hubb(config_hubb)
+
+    h_zero_hubb, g_zero_hubb = np.zeros((2 * L, 2 * L)), np.zeros((2 * L, 2 * L, 2 * L, 2 * L))
+    h_oneb_hubb, g_oneb_hubb = hubb.h, g_zero_hubb
+    h_twob_hubb, g_twob_hubb = h_zero_hubb, hubb.g
+
+    couplings_descr = ("rand(seed={})".format(seed) if couplings == "random"
+                       else "FH(t={}, U={})".format(t, U))
+
+    if spin_mode == "0":
+        spin_descr = "spinless"
+    elif spin_mode == "1/2 spinfree":
+        spin_descr = "spin-half-spinfree"
+    elif spin_mode == "1/2":
+        spin_descr = "spin-half"
+    else:
+        spin_descr = ""
+
+    config_aspeigcim_hubb = \
+    {
+        # "h_initial": h_zero_hubb,
+        # "g_initial": g_zero_hubb,
+        ### the following yield hamiltonians in AO (Wannier) basis ###
+        # "h_final": hubb.h,
+        # "g_final": hubb.g,
+        # "h_initial": h_oneb_hubb,
+        # "g_initial": g_oneb_hubb,
+        # "h_initial": h_twob_hubb,
+        # "g_initial": g_twob_hubb,
+        ### the following yield hamiltonians in MO (Hartree-Fock) basis ###
+        "h_final": hubb.h_MO,  # describes full hamiltonian\
+        "g_final": hubb.g_MO,  # in MO (Hartree-Fock) basis
+        "h_initial": hubb.h_HF,  # Fock operator\
+        "g_initial": hubb.g_HF,  # in MO basis
+
+        "C_sbd": hubb.C_spin_block_diag,
+
+        "N": N,
+        "spin_mode": spin_mode,
+        "name": "hubb_N={}_L={}_{}_{}".format(N, L, couplings_descr, spin_descr)
+    }
+
+    return config_aspeigcim_hubb
+
+def main(system="es"):
+    if not(system == "es" or system == "hubb"):
+        raise ValueError("system must be either \"es\" or \"hubb\"")
+
+    np.set_printoptions(precision=8, suppress=True, linewidth=np.inf, threshold=np.inf)
+
+    nreps = 1
+    evolution_times = [1000000]
+    # evolution_times = [np.inf]
+
+    min_gaps =\
+    {
+        "direct": np.zeros((nreps, len(evolution_times))),
+        "nqf":    np.zeros((nreps, len(evolution_times)))
+    }
+
+    min_gaps_avg =\
+    {
+        "direct": np.zeros(len(evolution_times)),
+        "nqf":    np.zeros(len(evolution_times))
+    }
+
+    min_gaps_std =\
+    {
+        "direct": np.zeros(len(evolution_times)),
+        "nqf":    np.zeros(len(evolution_times))
+    }
+
+    int_dH =\
+    {
+        "direct": np.zeros((nreps, len(evolution_times))),
+        "nqf":    np.zeros((nreps, len(evolution_times)))
+    }
+
+    int_dH_avg =\
+    {
+        "direct": np.zeros(len(evolution_times)),
+        "nqf":    np.zeros(len(evolution_times))
+    }
+
+    int_dH_std =\
+    {
+        "direct": np.zeros(len(evolution_times)),
+        "nqf":    np.zeros(len(evolution_times))
+    }
+
+    fin_ovlps =\
+    {
+        "direct": np.zeros((nreps, len(evolution_times))),
+        "nqf":    np.zeros((nreps, len(evolution_times)))
+    }
+
+    fin_ovlps_avg =\
+    {
+        "direct": np.zeros(len(evolution_times)),
+        "nqf":    np.zeros(len(evolution_times))
+    }
+
+    fin_ovlps_std =\
+    {
+        "direct": np.zeros(len(evolution_times)),
+        "nqf":    np.zeros(len(evolution_times))
+    }
+
+    for evolution_mode in ["direct", "nqf"]:
+        for rep in range(nreps):
+            config_aspeigcim = None
+            if(system == "es"):
+                config_aspeigcim = setup_config_aspeigcim_es("H4-w2-h0.15-plpdm0.7".format(rep))
+                # config_aspeigcim = setup_config_aspeigcim_es("H4-rand-{}".format(rep))
+            else:
+                config_aspeigcim = setup_config_aspeigcim_hubb()
+
+            # evolution mode
+            evo_mode = evolution_mode
+            # evo_mode = "nqf"
+            # evo_mode = "direct"
+            config_aspeigcim["evolution_mode"] = evo_mode
+
+            # trotter step size
+            ds = 1 / 10000
+            config_aspeigcim["ds"] = ds
+
+            evo_time_counter = 0
+            # for T in [np.inf]:
+            for T in evolution_times:
+                print("T = {}".format(T))
+                config_aspeigcim["T"] = T
+
+                aspeigcim = ASPEigCIM(config_aspeigcim)
+
+                aspeigcim.run()
+                evolution_result = aspeigcim.evolution_result
+                # evolution_result = None
+                result_dir = "{}/../result".format(file_dir)
+                result_name = "result_{}_{}".format(config_aspeigcim["name"], evo_mode)
+
+                config_result_processor = \
+                {
+                    "evolution_result": evolution_result,
+                    "result_name": result_name,
+                    "T" : T,
+                    "ds" : ds,
+                    "num_eig_plotted": 2,
+                    # "atoms_config_path": config_aspeigcim_es["atoms_config_path"],
+                    "result_dir": result_dir,
+                    "plot_energies": True,
+                    "plot_gaps": True,
+                    "plot_gs_overlap": True,
+                    "plot_init_overlap": True,
+                    "plot_S_sq": True,
+                    "plot_S_z": True,
+                    "plot_atoms": False,
+                    "use_physical_time": (True and T is not np.inf)
+                }
+
+                result_processor = ResultProcessor(config_result_processor)
+                # result_processor.save_walk_result()
+                result_processor.plot_evolution_result()
+                # result_processor.save_walk_result_plot()
+                # result_processor.find_success_times()
+
+                min_gaps[evolution_mode][rep, evo_time_counter] = np.min(evolution_result["energies"][:, 1] - evolution_result["energies"][:, 0])
+                int_dH[evolution_mode][rep, evo_time_counter] = evolution_result["sum_abs_dH_sq"]
+                fin_ovlps[evolution_mode][rep, evo_time_counter] = evolution_result["final_ground_state_overlaps"][-1, 0]
+
+                evo_time_counter += 1
+
+        min_gaps_avg[evolution_mode] = np.mean(min_gaps[evolution_mode], axis=0)
+        min_gaps_std[evolution_mode] = np.std(min_gaps[evolution_mode], axis=0)
+        int_dH_avg[evolution_mode] = np.mean(int_dH[evolution_mode], axis=0)
+        int_dH_std[evolution_mode] = np.std(int_dH[evolution_mode], axis=0)
+        fin_ovlps_avg[evolution_mode] = np.mean(fin_ovlps[evolution_mode], axis=0)
+        fin_ovlps_std[evolution_mode] = np.std(fin_ovlps[evolution_mode], axis=0)
+
+    print("min_gaps = \n{}".format(min_gaps))
+    print("min_gaps_avg = \n{}".format(min_gaps_avg))
+    print("min_gaps_std = \n{}".format(min_gaps_std))
+    print("int_dH = \n{}".format(int_dH))
+    print("int_dH_avg = \n{}".format(int_dH_avg))
+    print("int_dH_std = \n{}".format(int_dH_std))
+    print("fin_ovlps = \n{}".format(fin_ovlps))
+    print("fin_ovlps_avg = \n{}".format(fin_ovlps_avg))
+    print("fin_ovlps_std = \n{}".format(fin_ovlps_std))
+
+    # print("min_gaps = \n{}".format(min_gaps))
+    # print("avg(min_gaps) = {}".format(np.mean(min_gaps)))
+    # print("std(min_gaps) = {}".format(np.std(min_gaps)))
+
+if __name__ == "__main__":
+    atoms_config = ""
+    basis_set = ""
+
+    if len(sys.argv) > 1:
+        atoms_config = sys.argv[1][13:-4]  # strip path and extension
+        print("atoms_config = {}".format(atoms_config))
+    if len(sys.argv) > 2:
+        basis_set = sys.argv[2]
+        print("basis_set = {}".format(basis_set))
+
+    print()
+
+    main()

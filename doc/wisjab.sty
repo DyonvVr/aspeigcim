@@ -1,0 +1,96 @@
+\usepackage{amsmath, amsfonts, amssymb, enumitem, scalerel, mathtools, xcolor}
+\newsavebox{\foobox}\newcommand{\slantbox}[2][.5]{\mbox{\sbox{\foobox}{#2}\hskip\wd\foobox\pdfsave\pdfsetmatrix{1 0 #1 1}\llap{\usebox{\foobox}}\pdfrestore}}
+
+%Oude commando's bewaren
+\edef\lstroke{\l{}}
+\edef\Lstroke{\L{}}
+
+%Opgaven
+\newcounter{opgn}
+\setcounter{opgn}{1}
+\def\opg{$ $\\\\\textbf{Opgave \arabic{opgn}.}\\\addtocounter{opgn}{1}}
+\def\dop#1{\vspace{-21pt}\begin{enumerate}[a.]#1\end{enumerate}\vspace{-11pt}}
+
+%Algemeen
+\def\ds{\displaystyle}
+\def\ts{\textstyle}
+\def\itop#1#2{\DeclareMathOperator*{#1}{\scalerel*{\mathrm{#2}}{\sum}}}
+\def\binop#1#2{\DeclareMathOperator*{#1}{\scalerel*{\mathrm{#2}}{\cup}}}
+\def\romop{\DeclareMathOperator*}
+
+%Losse tekens
+\def\_{\hspace{-1pt}\raisebox{-1pt}{\scalebox{1.7}[1.7]{\textunderscore}}}
+\def\k{,\hspace{-2pt}}
+%\def\r{\raisebox{-1pt}{\scalebox{0.8}[0.8]{\rotatebox{42}{$'$}}}\!\!\!\!\>\raisebox{2.5pt}{\scalebox{0.45}[0.6]{\ooalign{\hss{$\smile$}\hss\cr\raisebox{-0.4pt}{$\smile$}}}}\!\!\!\>\scalebox{1}[1.2]{\rotatebox{-14}{$\iota$}}}
+\def\qed{{\footnotesize{Q.E.D.}}}
+\def\N{\mathbb{N}}
+\def\Z{\mathbb{Z}}
+\def\Q{\mathbb{Q}}
+\def\R{\mathbb{R}}
+\def\C{\mathbb{C}}
+
+%Manipulatoren
+\def\sups#1{$^{\text{#1}}$}
+\def\ma#1{\cdot10^{#1}}
+\def\e#1{\text{\hspace{1pt}#1}}
+
+%Haakjes
+\def\h#1{\left(#1\right)}
+\def\b#1{\left[#1\right]}
+\def\l#1{\left|#1\right|}
+\def\g#1{\left<#1\right>}
+\def\a#1{\left\{#1\right\}}
+\def\floor#1{\lfloor#1\rfloor}
+\def\ceil#1{\lceil#1\rceil}
+
+%Afgeleiden
+\def\af#1#2{\frac{d#1}{d#2}}
+\def\paf#1#2{\frac{\partial#1}{\partial#2}}
+
+%Lineaire algebra
+\def\vc#1{\boldsymbol{\mathrm{#1}}}
+\def\mt#1{\kern0.025em\mathrm{#1}\kern0.025em}
+\def\vcg#1{{\mathchoice
+  {\kern1.0pt\textdef@\displaystyle\f@size{{\slantbox[-0.25]{$\boldsymbol {#1}$}}}\kern-0.8pt}%
+  {\kern1.0pt\textdef@\textstyle\f@size{\firstchoice@false {\slantbox[-0.25]{$\boldsymbol {#1}$}}}\kern-0.8pt}%
+  {\kern0.9pt\textdef@\textstyle\sf@size{\firstchoice@false {\slantbox[-0.25]{$\boldsymbol {#1}$}}}\kern-0.8pt}%
+  {\kern1.0pt\textdef@\textstyle \ssf@size{\firstchoice@false {\slantbox[-0.25]{$\boldsymbol {#1}$}}}\kern-0.6pt}%
+  \check@mathfonts
+  }%
+}
+\def\mtg#1{{\mathchoice
+  {\kern0.6pt\textdef@\displaystyle\f@size{{\slantbox[-0.25]{${#1}$}}}\kern-0.2pt}%
+  {\kern0.6pt\textdef@\textstyle\f@size{\firstchoice@false {\slantbox[-0.25]{${#1}$}}}\kern-0.2pt}%
+  {\kern0.4pt\textdef@\textstyle\sf@size{\firstchoice@false {\slantbox[-0.25]{${#1}$}}}\kern-0.4pt}%
+  {\kern0.4pt\textdef@\textstyle \ssf@size{\firstchoice@false {\slantbox[-0.25]{${#1}$}}}\kern-0.4pt}%
+  \check@mathfonts
+  }%
+}
+%\def\vcg#1{\kern0.7pt\boldsymbol{\slantbox[-0.25]{$#1$}}\kern-1.3pt}
+%\def\mtg#1{\hspace{0.4pt}\slantbox[-0.25]{$#1$}\hspace{-0.4pt}}
+\def\ip{\hspace{-1.5pt}\mathbin{\raisebox{-0.29ex}{\scalebox{1.5}{$\cdot$}}}\hspace{-1.5pt}}
+\def\up{\hspace{-1pt}\mathbin{\raisebox{1pt}{\ooalign{\hss{\scalebox{0.8}{$\boldsymbol{\times}$}}\hss\cr{\scalebox{0.8}{$\hspace{0.9pt}\boldsymbol{\times}$}}}}}\hspace{-0.6pt}}
+\def\mat#1{\begin{bmatrix}#1\end{bmatrix}}
+\def\ro#1#2#3{\mat{\paf{#3}{y}-\paf{#2}{z}\vspace{6pt}\\\paf{#1}{z}-\paf{#3}{x}\vspace{6pt}\\\paf{#2}{x}-\paf{#1}{y}}}
+\def\T{^{\boldsymbol\top}}
+\def\c{^*}
+\def\t{^\dagger}
+
+%Kwantummechanica
+\def\bra#1{{\langle#1|}}
+\def\ket#1{{|#1\rangle}}
+\def\Bra#1{{\left\langle#1\right|}}
+\def\Ket#1{{\left|#1\right\rangle}}
+\def\braket#1#2{{\langle#1|#2\rangle}}
+\def\Braket#1#2{{\left\langle#1|#2\right\rangle}}
+\DeclarePairedDelimiterX\bbra[1]{\langle}{\rvert}{\!\delimsize\langle\mathopen{}#1}
+\DeclarePairedDelimiterX\kket[1]{\lvert}{\rangle}{\mathopen{}#1\delimsize\rangle\!}
+
+%Ontbrekend citaat
+\def\verw{[{\color{red}\small ref}]}
+%Citeren zonder haken
+%\makeatletter
+%\newif\ifnobrackets
+%\renewcommand\@cite[2]{\ifnobrackets\else[\fi{#1\if@tempswa , #2\fi}\ifnobrackets\else]\fi\nobracketsfalse}
+%\newcommand\citenb{\nobracketstrue\cite}
+%\makeatother

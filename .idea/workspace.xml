@@ -1,0 +1,529 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="CMakeRunConfigurationManager" shouldGenerate="true" shouldDeleteObsolete="true">
+    <generated>
+      <config projectName="aspeigcim" targetName="aspeigcim" />
+    </generated>
+  </component>
+  <component name="CMakeSettings">
+    <configurations>
+      <configuration PROFILE_NAME="Debug" ENABLED="true" CONFIG_NAME="Debug" />
+    </configurations>
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="9e50e9ca-66fe-4632-a246-24f30b9c24a5" name="Changes" comment="Kloten met statistieken">
+      <change afterPath="$PROJECT_DIR$/input/H3-w0.751.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/main/main.py.old" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-0.dat" beforeDir="false" afterPath="$PROJECT_DIR$/input/H4-rand-0.dat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-1.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-10.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-100.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-101.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-102.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-103.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-104.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-105.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-106.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-107.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-108.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-109.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-11.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-110.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-111.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-112.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-113.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-114.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-115.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-116.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-117.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-118.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-119.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-12.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-120.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-121.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-122.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-123.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-124.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-125.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-126.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-127.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-128.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-129.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-13.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-130.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-131.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-132.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-133.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-134.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-135.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-136.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-137.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-138.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-139.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-14.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-140.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-141.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-142.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-143.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-144.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-145.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-146.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-147.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-148.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-149.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-15.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-150.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-151.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-152.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-153.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-154.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-155.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-156.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-157.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-158.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-159.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-16.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-160.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-161.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-162.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-163.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-164.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-165.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-166.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-167.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-168.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-169.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-17.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-170.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-171.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-172.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-173.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-174.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-175.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-176.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-177.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-178.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-179.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-18.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-180.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-181.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-182.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-183.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-184.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-185.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-186.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-187.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-188.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-189.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-19.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-190.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-191.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-192.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-193.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-194.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-195.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-196.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-197.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-198.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-199.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-2.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-20.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-21.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-22.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-23.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-24.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-25.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-26.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-27.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-28.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-29.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-3.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-30.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-31.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-32.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-33.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-34.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-35.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-36.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-37.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-38.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-39.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-4.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-40.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-41.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-42.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-43.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-44.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-45.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-46.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-47.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-48.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-49.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-5.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-50.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-51.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-52.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-53.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-54.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-55.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-56.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-57.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-58.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-59.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-6.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-60.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-61.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-62.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-63.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-64.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-65.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-66.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-67.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-68.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-69.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-7.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-70.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-71.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-72.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-73.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-74.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-75.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-76.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-77.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-78.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-79.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-8.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-80.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-81.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-82.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-83.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-84.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-85.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-86.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-87.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-88.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-89.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-9.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-90.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-91.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-92.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-93.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-94.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-95.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-96.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-97.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-98.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/H4-rand-99.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/gen_atom_config.py" beforeDir="false" afterPath="$PROJECT_DIR$/input/gen_atom_config.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/aspeigcim/classes/aspeigcim.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/aspeigcim/classes/aspeigcim.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/aspeigcim/classes/hubb.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/aspeigcim/classes/hubb.py" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ClangdSettings">
+    <option name="formatViaClangd" value="false" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 5
+}</component>
+  <component name="ProjectId" id="20lplEeX6XEAVd8MomnEKRUnLLM" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;last_opened_file_path&quot;: &quot;/home/dyon/Doctoraat/ASPEigCIM/Code/aspeigcim&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.IDE.editor.colors&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/main" />
+      <recent name="$PROJECT_DIR$/src/aspeigcim/classes" />
+      <recent name="$PROJECT_DIR$/src/aspeigcim/main" />
+      <recent name="$PROJECT_DIR$/src" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/main" />
+      <recent name="$PROJECT_DIR$" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Python.main">
+    <configuration default="true" type="GradleAppRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="com.jetbrains.cidr.cpp.gradle.execution.GradleNativeBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="aspeigcim" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="aspeigcim" TARGET_NAME="aspeigcim" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="aspeigcim" RUN_TARGET_NAME="aspeigcim">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="main" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
+      <module name="aspeigcim" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/main" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main/main.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Python.main" />
+    </list>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="9e50e9ca-66fe-4632-a246-24f30b9c24a5" name="Changes" comment="" />
+      <created>1636629179388</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1636629179388</updated>
+      <workItem from="1636629224194" duration="778000" />
+      <workItem from="1636716217265" duration="3000" />
+      <workItem from="1636720874725" duration="25000" />
+      <workItem from="1636983014124" duration="346000" />
+      <workItem from="1637578996875" duration="5266000" />
+      <workItem from="1637681012389" duration="622000" />
+      <workItem from="1638267882811" duration="1402000" />
+    </task>
+    <task id="LOCAL-00001" summary="Q_k overlap">
+      <created>1637845311214</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1637845311215</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Fermi-Hubbard model">
+      <created>1638290099112</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1638290099112</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Fermi-Hubbard model">
+      <created>1638361840483</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1638361840483</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Fermi-Hubbard model">
+      <created>1649941908658</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1649941908658</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Attempt at implementing SCF for Hubbard">
+      <created>1651509852089</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1651509852089</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Weird stuff happening with small steps">
+      <created>1652100405857</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1652100405857</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Other factorisation">
+      <created>1653314659699</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1653314659699</updated>
+    </task>
+    <task id="LOCAL-00008" summary="HF for FH fixed (now in right basis)">
+      <created>1656007149511</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1656007149511</updated>
+    </task>
+    <task id="LOCAL-00009" summary="SCF procedure fixed (to an extent... still not working completely for hubbard)">
+      <created>1657724601177</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1657724601177</updated>
+    </task>
+    <task id="LOCAL-00010" summary="SCF procedure fixed + time bounds">
+      <created>1658479111768</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1658479111768</updated>
+    </task>
+    <task id="LOCAL-00011" summary="TDSE integration">
+      <created>1658501078726</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1658501078726</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Hamiltonian terms file i/o; start refactoring for experiments; evolution time adjustment according to eigenvalue">
+      <created>1658764311027</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1658764311027</updated>
+    </task>
+    <task id="LOCAL-00013" summary="Working on PT test">
+      <created>1659366774542</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1659366774542</updated>
+    </task>
+    <task id="LOCAL-00014" summary="Confusion">
+      <created>1659714977947</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1659714977947</updated>
+    </task>
+    <task id="LOCAL-00015" summary="Attempt to implement spinless HF">
+      <created>1660057396073</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1660057396073</updated>
+    </task>
+    <task id="LOCAL-00016" summary="Start at UHF?">
+      <created>1669215754888</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1669215754888</updated>
+    </task>
+    <task id="LOCAL-00017" summary="Almost there I guess">
+      <created>1669740189202</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1669740189202</updated>
+    </task>
+    <task id="LOCAL-00018" summary="HF energies checked, it's correct">
+      <created>1670596616251</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1670596616251</updated>
+    </task>
+    <task id="LOCAL-00019" summary="HF energies checked, it's correct">
+      <created>1671019343115</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1671019343115</updated>
+    </task>
+    <task id="LOCAL-00020" summary="HF energies checked, it's correct">
+      <created>1671120861245</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1671120861245</updated>
+    </task>
+    <task id="LOCAL-00021" summary="Apparently spins are measured differently in different orbital bases">
+      <created>1671526099303</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1671526099303</updated>
+    </task>
+    <task id="LOCAL-00022" summary="Last commit of 2022">
+      <created>1671794863780</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1671794863780</updated>
+    </task>
+    <task id="LOCAL-00023" summary="Kloten met statistieken">
+      <created>1679596149132</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1679596149132</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+    <MESSAGE value="Q_k overlap" />
+    <MESSAGE value="Fermi-Hubbard model" />
+    <MESSAGE value="Attempt at implementing SCF for Hubbard" />
+    <MESSAGE value="Weird stuff happening with small steps" />
+    <MESSAGE value="Other factorisation" />
+    <MESSAGE value="HF for FH fixed (now in right basis)" />
+    <MESSAGE value="SCF procedure fixed (to an extent... still not working completely for hubbard)" />
+    <MESSAGE value="SCF procedure fixed + time bounds" />
+    <MESSAGE value="TDSE integration" />
+    <MESSAGE value="Hamiltonian terms file i/o; start refactoring for experiments; evolution time adjustment according to eigenvalue" />
+    <MESSAGE value="Working on PT test" />
+    <MESSAGE value="Confusion" />
+    <MESSAGE value="Attempt to implement spinless HF" />
+    <MESSAGE value="Start at UHF?" />
+    <MESSAGE value="Almost there I guess" />
+    <MESSAGE value="HF energies checked, it's correct" />
+    <MESSAGE value="Apparently spins are measured differently in different orbital bases" />
+    <MESSAGE value="Last commit of 2022" />
+    <MESSAGE value="Kloten met statistieken" />
+    <option name="LAST_COMMIT_MESSAGE" value="Kloten met statistieken" />
+  </component>
+</project>

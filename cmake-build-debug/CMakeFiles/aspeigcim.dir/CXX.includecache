@@ -1,0 +1,20 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/dyon/Doctoraat/Code/aspeigcim/src/aspeigcim/classes/chamil.cpp
+vector
+-
+iostream
+-
+cmath
+-
+algorithm
+-
+boost/math/special_functions/binomial.hpp
+/home/dyon/Doctoraat/Code/aspeigcim/src/aspeigcim/classes/boost/math/special_functions/binomial.hpp
+

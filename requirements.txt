@@ -1,0 +1,9 @@
+matplotlib~=3.3.4
+h5py==3.2.1
+numpy>=1.20.0
+pyscf>=1.7.6
+scipy
+sympy
+
+openfermion
+setuptools~=52.0.0

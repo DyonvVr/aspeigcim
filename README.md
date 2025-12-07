@@ -1,0 +1,21 @@
+# Code for ASPEigCIM
+
+This is the main code of adiabatic state preparation from combined interaction matrix eigendecomposition algorithm.
+
+## Note
+This code is still in development, so the main class files are subject to change at any time.
+
+## Installation
+To install this package, first clone this repository:\
+`git clone https://github.com/DyonvVr-UvA/ASPEigCIM.git`
+
+Best is to use conda to make a virtual environment. Activate your environment, then install the aspeigcim package:\
+`cd aspeigcim`\
+`pip install -e .`
+
+## Examples
+Examples can be found in the examples folder. Try the jupyter notebook first, after installing jupyter:\
+`conda install jupyter`
+
+## P.s.
+Thanks Emiel for letting me copy his file structure and readme. I'll likely write a better readme somewhere in the future :)
