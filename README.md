@@ -13,6 +13,3 @@ Best is to use conda to make a virtual environment. Activate your environment, t
 ## Examples
 Examples can be found in the examples folder. Try the jupyter notebook first, after installing jupyter:\
 `conda install jupyter`
-
-## P.s.
-Thanks Emiel for letting me copy his file structure and readme. I'll likely write a better readme somewhere in the future :)
