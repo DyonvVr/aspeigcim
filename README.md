@@ -2,9 +2,6 @@
 
 This is the main code of adiabatic state preparation from combined interaction matrix eigendecomposition algorithm.
 
-## Note
-This code is still in development, so the main class files are subject to change at any time.
-
 ## Installation
 To install this package, first clone this repository:\
 `git clone https://github.com/DyonvVr-UvA/ASPEigCIM.git`
